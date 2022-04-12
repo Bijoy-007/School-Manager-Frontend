@@ -1,0 +1,9 @@
+{
+  // Allows you to import modules with the `~/components/Container` format.
+  "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "~/*": ["src/*"]
+    }
+  }
+}

@@ -1,0 +1,7 @@
+.sidebar__logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: wheat;
+  height: 9%;
+}

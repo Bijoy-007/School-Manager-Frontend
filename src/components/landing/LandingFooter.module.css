@@ -1,0 +1,10 @@
+.footer-wrapper {
+  background-color: #f5f5f5;
+  padding: 2%;
+  text-align: center;
+}
+
+.landing-navbar__link {
+  color: #000;
+  text-decoration: none;
+}

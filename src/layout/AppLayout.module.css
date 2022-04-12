@@ -1,0 +1,9 @@
+.app-layout__wrapper {
+  min-height: 100vh;
+}
+
+.app-layout__header {
+  background-color: #f4cdf7;
+  padding: 0;
+  margin: 0;
+}
