@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 
 import ClickEvent from '../../types/clickEvent';
 import classes from './LandingNavbar.module.css';
+import LoginModal from '../login/LoginModal';
 
 const { Item } = Menu;
 
@@ -71,6 +72,9 @@ const LandingNavbar = () => {
             </Item>
             <Item key="features" icon={<ToolFilled />}>
               Features
+            </Item>
+            <Item key="login">
+              <LoginModal />
             </Item>
             <Item key="contact" icon={<MailFilled />}>
               Contact
