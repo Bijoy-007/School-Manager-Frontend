@@ -197,6 +197,14 @@ const ListTable = () => {
       pagination={{ position: ['topRight'] }}
       dataSource={data}
       onChange={onChange}
+      onRow={(record, rowIndex) => {
+        return {
+          onClick: () => {
+            // eslint-disable-next-line no-console
+            console.log(record, rowIndex);
+          }, // click row);
+        };
+      }}
     />
   );
 };

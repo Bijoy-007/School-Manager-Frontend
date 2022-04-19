@@ -1,107 +1,64 @@
-// const SearchBar = () => {
-//   return (
-//     <div className="search-bar">
-//       <input type="text" placeholder="Search" />
-//     </div>
-//   );
-// };
-
-// export default SearchBar;
-
-/* eslint-disable  */
-import React from 'react';
-import { Select, Spin } from 'antd';
+import { useState } from 'react';
+import { Input, AutoComplete } from 'antd';
 import { SelectProps } from 'antd/es/select';
-import debounce from 'lodash/debounce';
 
-export interface DebounceSelectProps<ValueType = any>
-  extends Omit<SelectProps<ValueType>, 'options' | 'children'> {
-  fetchOptions: (search: string) => Promise<ValueType[]>;
-  debounceTimeout?: number;
+function getRandomInt(max: number, min = 0) {
+  return Math.floor(Math.random() * (max - min + 1)) + min; // eslint-disable-line no-mixed-operators
 }
 
-function DebounceSelect<
-  ValueType extends {
-    key?: string;
-    label: React.ReactNode;
-    value: string | number;
-  } = any,
->({ fetchOptions, debounceTimeout = 800, ...props }: DebounceSelectProps) {
-  const [fetching, setFetching] = React.useState(false);
-  const [options, setOptions] = React.useState<ValueType[]>([]);
-  const fetchRef = React.useRef(0);
-
-  const debounceFetcher = React.useMemo(() => {
-    const loadOptions = (value: string) => {
-      fetchRef.current += 1;
-      const fetchId = fetchRef.current;
-      setOptions([]);
-      setFetching(true);
-
-      fetchOptions(value).then((newOptions) => {
-        if (fetchId !== fetchRef.current) {
-          // for fetch callback order
-          return;
-        }
-
-        setOptions(newOptions);
-        setFetching(false);
-      });
-    };
-
-    return debounce(loadOptions, debounceTimeout);
-  }, [fetchOptions, debounceTimeout]);
-
-  return (
-    <Select<ValueType>
-      labelInValue
-      filterOption={false}
-      onSearch={debounceFetcher}
-      notFoundContent={fetching ? <Spin size="small" /> : null}
-      {...props}
-      options={options}
-    />
-  );
-}
-
-// Usage of DebounceSelect
-interface UserValue {
-  label: string;
-  value: string;
-}
-
-async function fetchUserList(username: string): Promise<UserValue[]> {
-  console.log('fetching user', username);
-
-  return fetch('https://randomuser.me/api/?results=5')
-    .then((response) => response.json())
-    .then((body) =>
-      body.results.map(
-        (user: {
-          name: { first: string; last: string };
-          login: { username: string };
-        }) => ({
-          label: `${user.name.first} ${user.name.last}`,
-          value: user.login.username,
-        }),
-      ),
-    );
-}
+const searchResult = (query: string) =>
+  new Array(getRandomInt(5))
+    .join('.')
+    .split('.')
+    .map((_, idx) => {
+      const category = `${query}${idx}`;
+      return {
+        value: category,
+        label: (
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+            }}
+          >
+            <span>
+              Found {query} on{' '}
+              <a
+                href={`https://s.taobao.com/search?q=${query}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {category}
+              </a>
+            </span>
+            <span>{getRandomInt(200, 100)} results</span>
+          </div>
+        ),
+      };
+    });
 
 const SearchBar = () => {
-  const [value, setValue] = React.useState<UserValue[]>([]);
+  const [options, setOptions] = useState<SelectProps<object>['options']>([]);
+
+  const handleSearch = (value: string) => {
+    setOptions(value ? searchResult(value) : []);
+  };
+
+  const onSelect = (value: string) => {
+    // eslint-disable-next-line no-console
+    console.log('onSelect', value);
+  };
 
   return (
-    <DebounceSelect
-      mode="multiple"
-      value={value}
-      placeholder="Select users"
-      fetchOptions={fetchUserList}
-      onChange={(newValue) => {
-        setValue(newValue);
-      }}
-      style={{ width: '100%' }}
-    />
+    <AutoComplete
+      dropdownMatchSelectWidth={252}
+      style={{ width: 300 }}
+      options={options}
+      onSelect={onSelect}
+      onSearch={handleSearch}
+    >
+      <Input.Search size="large" placeholder="input here" enterButton />
+    </AutoComplete>
   );
 };
 
