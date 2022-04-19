@@ -1,4 +1,4 @@
-import { Button, Table } from 'antd';
+import { Avatar, Button, Table } from 'antd';
 import { ColumnType } from 'antd/lib/table';
 // import { tableColumnTextFilterConfig } from '../../../components/app/UserList/TableUtils';
 
@@ -10,12 +10,25 @@ interface UserData {
   designation: string;
   engagementType: string;
   status: string;
+  profileImage: string;
 }
 
 const columns: ColumnType<UserData>[] = [
   {
+    title: '',
+    dataIndex: 'profileImage',
+    key: 'profileImage',
+    render: (text, record) =>
+      record.profileImage ? (
+        <Avatar src={record.profileImage} />
+      ) : (
+        <Avatar src="https://joeschmoe.io/api/v1/random" />
+      ),
+  },
+  {
     title: 'Teacher Id',
     dataIndex: 'teacherId',
+    key: 'teacherId',
     sorter: (a, b) => {
       return a.teacherId > b.teacherId ? 1 : -1;
     },
@@ -23,10 +36,12 @@ const columns: ColumnType<UserData>[] = [
   {
     title: 'Name',
     dataIndex: 'name',
+    key: 'name',
   },
   {
     title: 'Designation',
     dataIndex: 'designation',
+    key: 'designation',
     filters: [
       {
         text: 'Principal',
@@ -49,6 +64,7 @@ const columns: ColumnType<UserData>[] = [
   {
     title: 'Joining Date',
     dataIndex: 'joiningDate',
+    key: 'joiningDate',
     sorter: (a, b) => {
       return new Date(a.joiningDate) > new Date(b.joiningDate) ? 1 : -1;
     },
@@ -56,6 +72,7 @@ const columns: ColumnType<UserData>[] = [
   {
     title: 'Engagement Type',
     dataIndex: 'engagementType',
+    key: 'engagementType',
     filters: [
       {
         text: 'Permanent',
@@ -104,6 +121,7 @@ const data: UserData[] = [
     designation: 'Principal',
     engagementType: 'Permanent',
     status: 'Active',
+    profileImage: 'https://source.unsplash.com/user/c_v_r?sig=1',
   },
   {
     key: '2',
@@ -113,6 +131,7 @@ const data: UserData[] = [
     designation: 'Senior Teacher',
     engagementType: 'Permanent',
     status: 'Inactive',
+    profileImage: 'https://source.unsplash.com/user/c_v_r?sig=2',
   },
   {
     key: '3',
@@ -122,6 +141,7 @@ const data: UserData[] = [
     designation: 'Assistant Teacher',
     engagementType: 'Temporary',
     status: 'Active',
+    profileImage: 'https://source.unsplash.com/user/c_v_r?sig=3',
   },
   {
     key: '4',
@@ -131,6 +151,7 @@ const data: UserData[] = [
     designation: 'Principal',
     engagementType: 'Permanent',
     status: 'Inactive',
+    profileImage: '',
   },
 ];
 
@@ -214,3 +235,61 @@ export default UsersList;
 //   },
 // ];
    */
+
+/***
+ * 
+ * 
+ * 
+ * {
+    title: 'Name',
+    dataIndex: 'name',
+    key: 'name',
+    onCell: () => ({}),
+    filterDropdown: ({
+      setSelectedKeys,
+      selectedKeys,
+      confirm,
+      // clearFilters,
+    }) => {
+      return (
+        <>
+          <Input
+            autoFocus
+            placeholder="Type text here"
+            value={selectedKeys[0]}
+            onChange={(e) => {
+              setSelectedKeys(e.target.value ? [e.target.value] : []);
+              confirm({ closeDropdown: false });
+            }}
+            onPressEnter={() => {
+              confirm();
+            }}
+            onBlur={() => {
+              confirm();
+            }}
+          ></Input>
+          <Button
+            onClick={() => {
+              confirm();
+            }}
+            type="primary"
+          >
+            Search
+          </Button>
+         <Button
+            onClick={() => {
+              clearFilters();
+            }}
+            type="primary"
+          >
+            Reset
+          </Button> 
+          </>
+          );
+        },
+        filterIcon: () => {
+          return <SearchOutlined />;
+        },
+        onFilter: (value, record) => record.name.indexOf(value.toString()) === 0,
+      },
+ */
