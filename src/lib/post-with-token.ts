@@ -45,7 +45,11 @@ const postWithToken = async (endpoint: string, body: any) => {
     // * Show error notification
     if (!res.ok) {
       if (res.error?.length) {
-        res.error.map((err) => notification.error({ message: err.message }));
+        res.error.map((err) =>
+          notification.error({
+            message: err.msg || err.message,
+          }),
+        );
       } else {
         notification.error({ message: res.message });
       }

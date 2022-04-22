@@ -22,6 +22,7 @@ const SideBar = () => {
   const dispatch = useDispatch();
 
   const clickHandler = (event: ClickEvent) => {
+    if (event.key === 'logout') return setSelectedKey('/');
     setSelectedKey(event.key);
     navigate(`/app/${event.key}`);
   };

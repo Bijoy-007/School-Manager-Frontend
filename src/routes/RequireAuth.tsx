@@ -5,8 +5,6 @@ import { RootState } from '../store/store';
 const RequireAuth = () => {
   const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
   const location = useLocation();
-  // eslint-disable-next-line no-console
-  console.log(isLoggedIn);
 
   if (!isLoggedIn) {
     return <Navigate to="/unauthorized" state={{ from: location }} />;

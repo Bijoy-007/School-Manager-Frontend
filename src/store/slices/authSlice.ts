@@ -8,6 +8,10 @@ export const authSlice = createSlice({
   name: 'authState',
   initialState,
   reducers: {
+    setLoginStatus: (state) => {
+      const token = localStorage.getItem('token') || '';
+      state.isLoggedIn = token ? true : false;
+    },
     loginReducer: (state) => {
       state.isLoggedIn = true;
     },
@@ -19,6 +23,7 @@ export const authSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { loginReducer, logoutReducer } = authSlice.actions;
+export const { setLoginStatus, loginReducer, logoutReducer } =
+  authSlice.actions;
 
 export default authSlice.reducer;
