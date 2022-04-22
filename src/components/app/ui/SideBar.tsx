@@ -8,7 +8,7 @@ import {
 import { useNavigate } from 'react-router-dom';
 
 import classes from './SideBar.module.css';
-import ClickEvent from '../../../types/clickEvent';
+import ClickEvent from '../../../types/click-event';
 
 const { Sider } = Layout;
 

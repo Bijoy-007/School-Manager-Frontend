@@ -17,6 +17,13 @@
     "@typescript-eslint/no-floating-promises": "error",
     "linebreak-style": 0,
     "no-console": 2,
-    "react/react-in-jsx-scope": "off"
+    "react/react-in-jsx-scope": "off",
+    "@typescript-eslint/no-misused-promises": [
+      "error",
+      {
+        "checksConditionals": false,
+        "checksVoidReturn": false
+      }
+    ]  
   }
 }

@@ -2,7 +2,7 @@ import Applayout from '../../layout/AppLayout';
 
 const DashboardPage = () => {
   return (
-    <Applayout loading={false}>
+    <Applayout>
       <h1>Dashboard</h1>
     </Applayout>
   );
