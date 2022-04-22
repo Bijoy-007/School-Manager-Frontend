@@ -8,7 +8,7 @@ import {
 } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 
-import ClickEvent from '../../types/clickEvent';
+import ClickEvent from '../../types/click-event';
 import classes from './LandingNavbar.module.css';
 import LoginModal from '../login/LoginModal';
 
