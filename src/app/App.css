@@ -1,4 +1,6 @@
 .ant-input,
-.ant-picker {
+.ant-picker,
+.ant-select,
+.ant-select-selector {
   border-radius: 10px;
 }

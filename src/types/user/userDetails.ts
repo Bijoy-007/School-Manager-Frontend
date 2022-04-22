@@ -1,6 +1,8 @@
 import { Moment } from 'moment';
 
 export default interface UserDetails {
+  id?: string;
+  passsword?: string;
   name: string;
   email: string;
   type: string;
