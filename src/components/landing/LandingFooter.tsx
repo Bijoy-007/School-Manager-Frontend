@@ -15,6 +15,13 @@ const LandingFooter = () => {
         >
           Bijoy Das
         </a>
+        &
+        <a
+          className={classes['landing-navbar__link']}
+          href="https://github.com/Prodip-Kumar-Paul"
+        >
+          Prodip Kumar Paul
+        </a>
       </p>
     </div>
   );

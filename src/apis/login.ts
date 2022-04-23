@@ -7,7 +7,7 @@ import apis from './all-apis';
  * @param body {email: string, password: string}
  */
 
-const getLoginDetails = async (body: { email: string; password: string }) => {
+const login = async (body: { email: string; password: string }) => {
   const res = await postWithoutToken(apis.LOGIN, body);
   return {
     ok: res.ok,
@@ -16,4 +16,4 @@ const getLoginDetails = async (body: { email: string; password: string }) => {
   };
 };
 
-export default getLoginDetails;
+export default login;

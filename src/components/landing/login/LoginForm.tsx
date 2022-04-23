@@ -1,7 +1,7 @@
 import { Form, Input, Button, notification } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import getLoginDetails from '../../../apis/login';
+import login from '../../../apis/login';
 import { loginReducer } from '../../../store/slices/authSlice';
 
 interface loginPost {
@@ -17,21 +17,26 @@ const LoginForm = () => {
    * @description: fetch login details
    */
   const fetchLogin = async (values: loginPost) => {
-    const res = await getLoginDetails({
-      email: values.email,
-      password: values.password,
-    });
-    if (res.data && res.ok) {
+    try {
+      const res = await login({
+        email: values.email,
+        password: values.password,
+      });
+      if (res.data && res.ok) {
+        // eslint-disable-next-line no-console
+        console.log(res.data);
+        /**
+         * TODO => handle type any err
+         */
+        // eslint-disable-next-line  @typescript-eslint/no-unsafe-argument
+        localStorage.setItem('token', res.data.token);
+        dispatch(loginReducer());
+        notification.success({ message: 'Logged In successfully' });
+        navigate(`/app/dashboard`);
+      }
+    } catch (err) {
       // eslint-disable-next-line no-console
-      console.log(res.data);
-      /**
-       * TODO => handle type any err
-       */
-      // eslint-disable-next-line  @typescript-eslint/no-unsafe-argument
-      localStorage.setItem('token', res.data.token);
-      dispatch(loginReducer());
-      notification.success({ message: 'Logged In successfully' });
-      navigate(`/app/dashboard`);
+      console.log(err);
     }
   };
 
@@ -44,11 +49,6 @@ const LoginForm = () => {
     });
   };
 
-  const onFinishFailed = (errorInfo: unknown) => {
-    //  eslint-disable-next-line no-console
-    console.log('Failed:', errorInfo);
-  };
-
   return (
     <Form
       name="basic"
@@ -58,7 +58,6 @@ const LoginForm = () => {
         remember: true,
       }}
       onFinish={onFinish}
-      onFinishFailed={onFinishFailed}
       autoComplete="off"
       style={{ margin: '2% auto' }}
     >
