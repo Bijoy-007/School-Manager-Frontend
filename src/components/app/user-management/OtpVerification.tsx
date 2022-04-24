@@ -12,6 +12,7 @@ interface Props {
 
 const OtpVerification = (props: Props) => {
   const [otp, setOtp] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(false);
   const navigate = useNavigate();
 
   const otpChangeHandler = (value: string) => {
@@ -19,6 +20,7 @@ const OtpVerification = (props: Props) => {
   };
 
   const verifyHandler = async () => {
+    setLoading(true);
     try {
       if (otp.length !== 6) {
         return notification.error({ message: 'Please enter a valid OTP' });
@@ -33,6 +35,7 @@ const OtpVerification = (props: Props) => {
         window.location.reload();
       }
     } catch (error) {}
+    setLoading(false);
   };
 
   return (
@@ -41,6 +44,7 @@ const OtpVerification = (props: Props) => {
       <p>Enter the OTP sent to the given email to verify the account.</p>
       <Otp onChange={otpChangeHandler} value={otp} numInputs={6} />
       <Button
+        loading={loading}
         className={classes['otp-verification__btn']}
         onClick={verifyHandler}
         type="primary"

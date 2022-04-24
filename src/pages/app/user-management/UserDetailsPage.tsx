@@ -82,11 +82,14 @@ const UserDetailsPage = () => {
 
   const updateUser = async (details: UserDetails) => {
     try {
-      const { ok } = await updateUserDetails(details);
+      const { ok } = await updateUserDetails({
+        ...details,
+        id: userDetails.id,
+      });
       if (ok) {
         notification.success({ message: 'User details updated successfully' });
-        if (details.id) {
-          navigate(`/app/users/${details.id}`);
+        if (userDetails.id) {
+          navigate(`/app/users/${userDetails.id}`);
           window.location.reload();
         }
       }
