@@ -1,10 +1,44 @@
 import { Avatar, Button, Popconfirm, Table } from 'antd';
 import { ColumnType } from 'antd/lib/table';
+import { useNavigate } from 'react-router-dom';
+import updateUserDetails from '../../../apis/update-user-details';
 import Userlist from '../../../types/user/userList';
 
 interface Props {
   data: Userlist[];
 }
+
+const updateStatus = async (details: Userlist) => {
+  try {
+    const res = await updateUserDetails({
+      id: details.id,
+      isActive: !details.isActive,
+      name: '',
+      email: '',
+      type: '',
+      joiningDate: null,
+      description: '',
+      teacherId: '',
+      phone: '',
+    });
+    if (res.data && res.ok) {
+      // eslint-disable-next-line no-console
+      console.log(res.data);
+    }
+  } catch (err) {
+    // eslint-disable-next-line no-console
+    console.log(err);
+  }
+};
+
+const activatehandler = (record: Userlist) => {
+  // eslint-disable-next-line no-console
+  console.log(record);
+  updateStatus(record).catch((err) => {
+    // eslint-disable-next-line no-console
+    console.log(err);
+  });
+};
 
 const columns: ColumnType<Userlist>[] = [
   {
@@ -133,62 +167,14 @@ const columns: ColumnType<Userlist>[] = [
   },
 ];
 
-// const data: Userlist[] = [
-//   {
-//     key: '1',
-//     teacherId: 'T005',
-//     name: 'John Brown',
-//     joiningDate: '01/01/2019',
-//     designation: 'Principal',
-//     engagementType: 'Permanent',
-//     isActive: true,
-//     profileImage: 'https://joeschmoe.io/api/v1/random',
-//   },
-//   {
-//     key: '2',
-//     teacherId: 'T002',
-//     name: 'Brown',
-//     joiningDate: '01/10/2020',
-//     designation: 'Senior Teacher',
-//     engagementType: 'Permanent',
-//     isActive: true,
-//     profileImage: 'https://source.unsplash.com/user/c_v_r?sig=2',
-//   },
-//   {
-//     key: '3',
-//     teacherId: 'T003',
-//     name: 'Jon',
-//     joiningDate: '11/01/2020',
-//     designation: 'Assistant Teacher',
-//     engagementType: 'Temporary',
-//     isActive: true,
-//     profileImage: 'https://joeschmoe.io/api/v1/random',
-//   },
-//   {
-//     key: '4',
-//     teacherId: 'T004',
-//     name: 'Test',
-//     joiningDate: '01/01/2021',
-//     designation: 'Principal',
-//     engagementType: 'Permanent',
-//     isActive: false,
-//     profileImage: '',
-//   },
-// ];
-
-const activatehandler = (record: Userlist) => {
-  // eslint-disable-next-line no-console
-  console.log(record);
-};
-
 const ListTable = (props: Props) => {
+  const navigate = useNavigate();
   const onChange = (
     pagination: unknown,
     filters: unknown,
     sorter: unknown,
     extra: unknown,
   ) => {
-    // alert('onChange');
     // eslint-disable-next-line no-console
     console.log('params', pagination, filters, sorter, extra);
   };
@@ -203,7 +189,8 @@ const ListTable = (props: Props) => {
           // * click row
           onClick: () => {
             // eslint-disable-next-line no-console
-            console.log(record, rowIndex);
+            console.log(record.id, rowIndex);
+            if (record.id) navigate(`/app/users/${record.id}`);
           },
         };
       }}
@@ -212,30 +199,3 @@ const ListTable = (props: Props) => {
 };
 
 export default ListTable;
-
-/**
- * {
-    "message": "success",
-    "status": true,
-    "data": [
-        {
-            "id": "3cf954c5-bc9a-49a7-95d2-8a50bc2b64b3",
-            "name": "Bijoy",
-            "email": "dasbijoy9804417767@gmail.com",
-            "type": "ASSISTANT_TEACHER",
-            "isActive": true,
-            "createdAt": "2022-04-23T08:07:32.048Z",
-            "teacherId": "T-1"
-        },
-        {
-            "id": "5a1c3cd9-c31f-42b8-b776-21958d7d34d6",
-            "name": "Prodip Kumar Paul",
-            "email": "prodipkumarpaul708@gmail.com",
-            "type": "ASSISTANT_TEACHER",
-            "isActive": true,
-            "createdAt": "2022-04-23T08:08:38.908Z",
-            "teacherId": "T-2"
-        }
-    ]
-}
- */
