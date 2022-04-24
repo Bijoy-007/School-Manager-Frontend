@@ -1,6 +1,12 @@
 .ant-input,
+.ant-input-affix-wrapper,
 .ant-picker,
 .ant-select,
 .ant-select-selector {
   border-radius: 10px;
+}
+.ant-tag {
+  border-radius: 5px;
+  padding: 5px;
+  font-weight: 500;
 }

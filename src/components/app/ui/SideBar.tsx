@@ -9,6 +9,8 @@ import { useNavigate } from 'react-router-dom';
 
 import classes from './SideBar.module.css';
 import ClickEvent from '../../../types/click-event';
+import { useDispatch } from 'react-redux';
+import { logoutReducer } from '../../../store/slices/authSlice';
 
 const { Sider } = Layout;
 
@@ -17,8 +19,10 @@ const SideBar = () => {
   const [selectedKey, setSelectedKey] = useState<string>('1');
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const clickHandler = (event: ClickEvent) => {
+    if (event.key === 'logout') return setSelectedKey('/');
     setSelectedKey(event.key);
     navigate(`/app/${event.key}`);
   };
@@ -27,8 +31,11 @@ const SideBar = () => {
     setCollapsed(collapsed);
   };
   const logoutHandler = () => {
-    localStorage.removeItem('token');
+    dispatch(logoutReducer());
     notification.success({ message: 'Logged out successfully' });
+    /**
+     * TODO => routing not working
+     */
     navigate('/');
   };
 
