@@ -10,7 +10,7 @@ import Userlist from '../../../types/user/userList';
 
 const UsersList = () => {
   const [users, setUsers] = useState<Userlist[]>([]);
-  const [isActivate, setIsActivate] = useState<boolean>(false);
+  const [isUpdated, setIsUpdated] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const fetchList = useCallback(async () => {
     try {
@@ -50,7 +50,7 @@ const UsersList = () => {
       console.log(err);
       notification.error({ message: 'Something went wrong!' });
     });
-  }, [isActivate]);
+  }, [isUpdated]);
 
   return (
     <Applayout>
@@ -59,8 +59,8 @@ const UsersList = () => {
           <UserListInfo data={users} types={userTypes} />
           <ListTable
             data={users}
-            onActivate={() => {
-              setIsActivate((prev) => !prev);
+            onUpdate={() => {
+              setIsUpdated((prev) => !prev);
             }}
           />
         </ContentWrapper>

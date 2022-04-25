@@ -7,7 +7,7 @@ import updateUserDetails from '../../../apis/update-user-details';
 import UserDetails from '../../../types/user/userDetails';
 
 interface Props {
-  onActivate: () => void;
+  onUpdate: () => void;
   data: Partial<UserDetails>[];
 }
 
@@ -33,7 +33,7 @@ const ListTable = (props: Props) => {
       notification.error({ message: 'Something went wrong!' });
     }
     setLoading(false);
-    props.onActivate();
+    props.onUpdate();
   };
 
   const columns: ColumnType<Partial<UserDetails>>[] = [
