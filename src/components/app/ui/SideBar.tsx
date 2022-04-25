@@ -33,9 +33,6 @@ const SideBar = () => {
   const logoutHandler = () => {
     dispatch(logoutReducer());
     notification.success({ message: 'Logged out successfully' });
-    /**
-     * TODO => routing not working
-     */
     navigate('/');
   };
 

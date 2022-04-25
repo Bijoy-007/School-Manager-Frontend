@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Input, AutoComplete, SelectProps } from 'antd';
+import { Input, AutoComplete, SelectProps, Avatar } from 'antd';
 import UserDetails from '../../../types/user/userDetails';
 import { useNavigate } from 'react-router-dom';
 
@@ -20,9 +20,9 @@ const searchResult = (query: string, data: UserDetails[]) => {
       value: user.id,
       label: (
         <div>
-          <p>
-            {user.teacherId} <span>{user.name}</span>
-          </p>
+          <Avatar src={user.profileImage} />
+          <span style={{ margin: '5px' }}>{user.teacherId}</span>
+          <span>{user.name}</span>
         </div>
       ),
     };

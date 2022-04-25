@@ -1,3 +1,4 @@
+import { notification } from 'antd';
 import { useEffect, useCallback, useState } from 'react';
 import getAllUser from '../../../apis/get-all-user';
 import ContentWrapper from '../../../components/app/ui/ContentWrapper';
@@ -9,6 +10,7 @@ import Userlist from '../../../types/user/userList';
 
 const UsersList = () => {
   const [users, setUsers] = useState<Userlist[]>([]);
+  const [isActivate, setIsActivate] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const fetchList = useCallback(async () => {
     try {
@@ -22,6 +24,7 @@ const UsersList = () => {
       // eslint-disable-next-line no-console
       console.log(err);
       setLoading(false);
+      notification.error({ message: 'Something went wrong!' });
     }
   }, []);
 
@@ -45,15 +48,21 @@ const UsersList = () => {
     fetchList().catch((err) => {
       // eslint-disable-next-line no-console
       console.log(err);
+      notification.error({ message: 'Something went wrong!' });
     });
-  }, []);
+  }, [isActivate]);
 
   return (
     <Applayout>
       <Loader loading={loading}>
         <ContentWrapper>
           <UserListInfo data={users} types={userTypes} />
-          <ListTable data={users} />
+          <ListTable
+            data={users}
+            onActivate={() => {
+              setIsActivate((prev) => !prev);
+            }}
+          />
         </ContentWrapper>
       </Loader>
     </Applayout>
