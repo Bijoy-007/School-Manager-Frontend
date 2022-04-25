@@ -6,7 +6,7 @@ import UserDetails from '../types/user/userDetails';
  * @param body userDetails: string
  */
 
-const updateUserDetails = async (body: UserDetails) => {
+const updateUserDetails = async (body: Partial<UserDetails>) => {
   const res = await postWithToken('/user/update_user_details', body);
   return {
     ok: res.ok,

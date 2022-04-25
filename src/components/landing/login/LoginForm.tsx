@@ -37,6 +37,7 @@ const LoginForm = () => {
     } catch (err) {
       // eslint-disable-next-line no-console
       console.log(err);
+      notification.error({ message: 'Something went wrong!' });
     }
   };
 
@@ -46,6 +47,7 @@ const LoginForm = () => {
     fetchLogin(values).catch((err) => {
       // eslint-disable-next-line no-console
       console.log(err);
+      notification.error({ message: 'Something went wrong!' });
     });
   };
 
