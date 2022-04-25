@@ -52,7 +52,7 @@ const UsersList = () => {
     <Applayout>
       <Loader loading={loading}>
         <ContentWrapper>
-          <UserListInfo types={userTypes} />
+          <UserListInfo data={users} types={userTypes} />
           <ListTable data={users} />
         </ContentWrapper>
       </Loader>

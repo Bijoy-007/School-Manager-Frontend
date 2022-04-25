@@ -10,5 +10,8 @@ export default interface UserDetails {
   description: string;
   teacherId: string;
   phone: string;
-  isActive?: boolean;
+  isActive: boolean;
+  profileImage: string;
+  createdAt: Date;
+  label: string;
 }

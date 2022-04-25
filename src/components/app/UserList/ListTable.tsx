@@ -1,25 +1,20 @@
+import { LockTwoTone, UnlockTwoTone } from '@ant-design/icons';
 import { Avatar, Button, Popconfirm, Table } from 'antd';
 import { ColumnType } from 'antd/lib/table';
 import { useNavigate } from 'react-router-dom';
 import updateUserDetails from '../../../apis/update-user-details';
-import Userlist from '../../../types/user/userList';
+import UserDetails from '../../../types/user/userDetails';
+// import moment from 'moment';
 
 interface Props {
-  data: Userlist[];
+  data: Partial<UserDetails>[];
 }
 
-const updateStatus = async (details: Userlist) => {
+const updateStatus = async (details: Partial<UserDetails>) => {
   try {
     const res = await updateUserDetails({
       id: details.id,
       isActive: !details.isActive,
-      name: '',
-      email: '',
-      type: '',
-      joiningDate: null,
-      description: '',
-      teacherId: '',
-      phone: '',
     });
     if (res.data && res.ok) {
       // eslint-disable-next-line no-console
@@ -31,20 +26,17 @@ const updateStatus = async (details: Userlist) => {
   }
 };
 
-const activatehandler = (record: Userlist) => {
-  // eslint-disable-next-line no-console
-  console.log(record);
+const activatehandler = (record: Partial<UserDetails>) => {
   updateStatus(record).catch((err) => {
     // eslint-disable-next-line no-console
     console.log(err);
   });
 };
 
-const columns: ColumnType<Userlist>[] = [
+const columns: ColumnType<Partial<UserDetails>>[] = [
   {
     title: '',
     dataIndex: 'profileImage',
-    key: 'profileImage',
     align: 'center',
     width: '5%',
     render: (text, record) =>
@@ -58,27 +50,27 @@ const columns: ColumnType<Userlist>[] = [
             )}`,
           }}
         >
-          {record.name.slice(0, 1).toUpperCase()}
+          {record.name?.slice(0, 1).toUpperCase()}
         </Avatar>
       ),
   },
   {
     title: 'Teacher Id',
     dataIndex: 'teacherId',
-    key: 'teacherId',
     sorter: (a, b) => {
-      return a.teacherId > b.teacherId ? 1 : -1;
+      if (a.teacherId && b.teacherId) {
+        return a.teacherId || '' > b.teacherId ? 1 : -1;
+      }
+      return 0;
     },
   },
   {
     title: 'Name',
     dataIndex: 'name',
-    key: 'name',
   },
   {
     title: 'Designation',
     dataIndex: 'type',
-    key: 'type',
     filters: [
       {
         text: 'Principal',
@@ -96,8 +88,8 @@ const columns: ColumnType<Userlist>[] = [
     filterMode: 'tree',
     filterSearch: true,
     onFilter: (value, record) => {
-      const types = record.type.toUpperCase().split(' ').join('_');
-      return types.indexOf(value.toString()) === 0;
+      const types = record.type?.toUpperCase().split(' ').join('_');
+      return types?.indexOf(value.toString()) === 0;
     },
     render: (text, record) => {
       switch (text) {
@@ -117,53 +109,49 @@ const columns: ColumnType<Userlist>[] = [
   {
     title: 'Joining Date',
     dataIndex: 'createdAt',
-    key: 'createdAt',
     sorter: (a, b) => {
-      return a.createdAt > b.createdAt ? 1 : -1;
+      if (a.createdAt && b.createdAt) {
+        const aDate = new Date(a.createdAt).getTime();
+        const bDate = new Date(b.createdAt).getTime();
+        return aDate > bDate ? 1 : -1;
+      }
+      return 0;
     },
     /**
      * TODO => Add date format
      */
+    render: (text) => {
+      return new Date(text as Date).toLocaleDateString();
+    },
   },
   {
     title: 'Contact Email',
     dataIndex: 'email',
-    key: 'email',
   },
   {
     title: 'Action',
-    key: 'action',
     dataIndex: 'isActive',
-    render: (text, record) =>
-      record.isActive ? (
-        <Popconfirm
-          placement="topLeft"
-          title={`Are you sure you want to deactivate ${record.name}?`}
-          onConfirm={activatehandler.bind(this, record)}
-          okText="Yes"
-          cancelText="No"
-        >
-          <Button type="primary" shape="round" danger>
-            Diactivate
-          </Button>
-        </Popconfirm>
-      ) : (
-        <Popconfirm
-          placement="topRight"
-          title={`Are you sure you want to activate ${record.name}?`}
-          onConfirm={activatehandler.bind(this, record)}
-          okText="Yes"
-          cancelText="No"
-        >
-          <Button
-            onClick={activatehandler.bind(this, record)}
-            type="primary"
-            shape="round"
-          >
-            Activate
-          </Button>
-        </Popconfirm>
-      ),
+    render: (text, record) => (
+      <Popconfirm
+        placement="topLeft"
+        title={`Are you sure you want to deactivate ${record.name || ''}?`}
+        onConfirm={activatehandler.bind(this, record)}
+        okText="Yes"
+        cancelText="No"
+        onCancel={(e) => {
+          e?.stopPropagation();
+        }}
+      >
+        <Button
+          type="ghost"
+          shape="circle"
+          icon={record.isActive ? <LockTwoTone /> : <UnlockTwoTone />}
+          onClick={(e) => {
+            e.stopPropagation();
+          }}
+        ></Button>
+      </Popconfirm>
+    ),
   },
 ];
 
@@ -181,15 +169,14 @@ const ListTable = (props: Props) => {
   return (
     <Table
       columns={columns}
-      pagination={{ position: ['topRight'] }}
+      pagination={{ position: ['topRight'], pageSize: 10 }}
       dataSource={props.data}
+      rowKey="id"
       onChange={onChange}
-      onRow={(record, rowIndex) => {
+      onRow={(record) => {
         return {
           // * click row
           onClick: () => {
-            // eslint-disable-next-line no-console
-            console.log(record.id, rowIndex);
             if (record.id) navigate(`/app/users/${record.id}`);
           },
         };

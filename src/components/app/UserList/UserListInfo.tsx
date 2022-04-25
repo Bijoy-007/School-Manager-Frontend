@@ -1,8 +1,10 @@
 import { Tag } from 'antd';
+import Userlist from '../../../types/user/userList';
 import SearchBar from './SearchBar';
 import classes from './UserListInfo.module.css';
 
 interface Props {
+  data: Userlist[];
   types: {
     assistants: number;
     seniors: number;
@@ -15,7 +17,7 @@ const UserListInfo = (props: Props) => {
     <div className={classes['info_section']}>
       <h1>Teachers </h1>
       <div className={classes.search}>
-        <SearchBar />
+        <SearchBar data={props.data} />
       </div>
       <div className={classes['info_tags']}>
         <Tag color="green">All teachers - {props.types.all_teachers}</Tag>

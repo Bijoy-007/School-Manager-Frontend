@@ -1,60 +1,52 @@
 import { useState } from 'react';
-import { Input, AutoComplete } from 'antd';
-import { SelectProps } from 'antd/es/select';
+import { Input, AutoComplete, SelectProps } from 'antd';
+import UserDetails from '../../../types/user/userDetails';
+import { useNavigate } from 'react-router-dom';
 
-function getRandomInt(max: number, min = 0) {
-  return Math.floor(Math.random() * (max - min + 1)) + min; // eslint-disable-line no-mixed-operators
+interface Props {
+  data: UserDetails[];
 }
 
-const searchResult = (query: string) =>
-  new Array(getRandomInt(5))
-    .join('.')
-    .split('.')
-    .map((_, idx) => {
-      const category = `${query}${idx}`;
-      return {
-        value: category,
-        label: (
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-            }}
-          >
-            <span>
-              Found {query} on{' '}
-              <a
-                href={`https://s.taobao.com/search?q=${query}`}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {category}
-              </a>
-            </span>
-            <span>{getRandomInt(200, 100)} results</span>
-          </div>
-        ),
-      };
-    });
+const searchResult = (query: string, data: UserDetails[]) => {
+  const filteredData = data.filter(
+    (user) =>
+      user.name.toLowerCase().includes(query.toLowerCase()) ||
+      user.email.toLowerCase().includes(query.toLowerCase()) ||
+      user.teacherId.toLowerCase().includes(query.toLowerCase()),
+  );
 
-const SearchBar = () => {
+  return filteredData.map((user) => {
+    return {
+      value: user.id,
+      label: (
+        <div>
+          <p>
+            {user.teacherId} <span>{user.name}</span>
+          </p>
+        </div>
+      ),
+    };
+  });
+};
+
+const SearchBar = (props: Props) => {
   const [options, setOptions] = useState<SelectProps<object>['options']>([]);
+  const navigate = useNavigate();
 
   const handleSearch = (value: string) => {
-    setOptions(value ? searchResult(value) : []);
+    value ? setOptions(searchResult(value, props.data)) : setOptions([]);
   };
 
   const onSelect = (value: string) => {
-    // eslint-disable-next-line no-console
-    console.log('onSelect', value);
+    navigate(`/app/users/${value}`);
   };
 
   return (
     <AutoComplete
       dropdownMatchSelectWidth={252}
       style={{ width: 300 }}
-      options={options}
       onSelect={onSelect}
+      options={options}
       onSearch={handleSearch}
     >
       <Input.Search size="large" placeholder="input here" enterButton />

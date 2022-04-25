@@ -40,7 +40,7 @@ const UserDetailsPage = () => {
   const navigate = useNavigate();
 
   const [newId, setNewId] = useState<string>('');
-  const [userDetails, setUserDetails] = useState<UserDetails>({
+  const [userDetails, setUserDetails] = useState<Partial<UserDetails>>({
     id: '',
     passsword: '',
     name: '',
