@@ -1,0 +1,16 @@
+.info_section {
+  margin: 2%;
+  padding: auto 3%;
+}
+.info_tags {
+  margin: 2% 1%;
+}
+.info_tags Tag {
+  padding: 1%;
+}
+.search {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  width: 20%;
+}
